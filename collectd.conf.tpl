@@ -1,5 +1,3 @@
-Hostname "{{ HOST_NAME }}"
-
 FQDNLookup false
 Interval {{ COLLECT_INTERVAL | default("10") }}
 Timeout 2
@@ -74,3 +72,15 @@ LoadPlugin write_graphite
  </Carbon>
 </Plugin>
 
+TypesDB "/opt/docker-collectd-plugin/dockerplugin.db"
+LoadPlugin python
+
+<Plugin python>
+  ModulePath "/opt/docker-collectd-plugin"
+  Import "dockerplugin"
+
+  <Module dockerplugin>
+    BaseURL "unix://var/run/docker.sock"
+    Timeout 3
+  </Module>
+</Plugin>

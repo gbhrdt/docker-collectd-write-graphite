@@ -1,4 +1,4 @@
-FROM    ubuntu:xenial
+FROM    debian:latest
 
 ENV     DEBIAN_FRONTEND noninteractive
 
@@ -11,12 +11,8 @@ ADD     etc_mtab /etc/mtab
 ADD     collectd.conf.tpl /etc/collectd/collectd.conf.tpl
 
 RUN	pip install envtpl wheel
-
-RUN cd /opt
-RUN git clone https://github.com/lebauce/docker-collectd-plugin.git
-RUN cd docker-collectd-plugin
-
-RUN pip install -r requirements.txt
+RUN cd /opt && git clone https://github.com/lebauce/docker-collectd-plugin.git && cd docker-collectd-plugin
+RUN pip install -r /opt/docker-collectd-plugin/requirements.txt
 
 ADD     start_container /usr/bin/start_container
 RUN     chmod +x /usr/bin/start_container
